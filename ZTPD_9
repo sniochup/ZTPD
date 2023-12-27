@@ -1,0 +1,15 @@
+9. <xsl:apply-templates select="SWIAT/KRAJE/KRAJ"/>
+11. <xsl:apply-templates select="SWIAT/KRAJE/KRAJ[@KONTYNENT='k1']"/>
+12. <xsl:apply-templates select="SWIAT/KRAJE/KRAJ[@KONTYNENT=//KONTYNENT[NAZWA='Europe']/@ID]"/>
+15. Liczba krajów: <xsl:value-of select="count(SWIAT/KRAJE/KRAJ[@KONTYNENT=//KONTYNENT[NAZWA='Europe']/@ID])"/>
+17. <td><xsl:value-of select="position()"/></td>
+18. <tr><th>lp</th><th>Kraj</th><th>Stolica</th></tr>
+21. <xsl:sort select="NAZWA"/>
+27. /SWIAT/KRAJE/KRAJ
+28. /SWIAT/KRAJE/KRAJ[starts-with(NAZWA, 'A')]
+29. /SWIAT/KRAJE/KRAJ[starts-with(NAZWA, substring(STOLICA,1,1))]
+32. //NAZWISKO
+33. /ZESPOLY/ROW[NAZWA='SYSTEMY EKSPERCKIE']//NAZWISKO/text()
+34. count(doc('file:///.../zesp_prac.xml')/ZESPOLY/ROW[ID_ZESP=10]/PRACOWNICY/ROW)
+35. //PRACOWNICY/ROW[ID_SZEFA=100]/NAZWISKO
+36. sum(doc('file:///.../zesp_prac.xml')//PRACOWNICY/ROW[ID_ZESP=//PRACOWNICY/ROW[NAZWISKO='BRZEZINSKI']/ID_ZESP]/PLACA_POD)
