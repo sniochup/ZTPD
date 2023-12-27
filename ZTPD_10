@@ -1,0 +1,341 @@
+------ 3. ------
+<?xml-stylesheet type="text/xsl" href="zesp_prac.xsl"?>
+
+------ 4. ------
+<xsl:template match="/">
+    <html>
+        <body>
+            <xsl:apply-templates/>
+        </body>
+    </html>
+</xsl:template>
+
+------ 5. ------
+<h1>ZESPOŁY:</h1>
+
+------ 6. a) ------
+<ol>
+    <xsl:for-each select="/ZESPOLY/ROW/NAZWA">
+        <li>
+            <xsl:value-of select="text()"/>
+        </li>
+    </xsl:for-each>
+</ol>
+
+------ 6. b) ------
+<xsl:template match="/">
+    <html>
+        <body>
+            <h1>ZESPOŁY:</h1>
+            <ol>
+                <xsl:apply-templates select="/ZESPOLY/ROW"/>
+            </ol>
+        </body>
+    </html>
+</xsl:template>
+
+<xsl:template match="/ZESPOLY/ROW">
+    <li>
+        <xsl:value-of select="NAZWA"/>
+    </li>
+</xsl:template>
+
+------ 7. ------
+    <xsl:template match="/">
+        <html>
+            <body>
+                <h1>ZESPOŁY:</h1>
+                <ol>
+                    <xsl:apply-templates select="/ZESPOLY/ROW"/>
+                </ol>
+                <xsl:apply-templates select="/ZESPOLY/ROW" mode="details"/>
+            </body>
+        </html>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW">
+        <li>
+            <xsl:value-of select="NAZWA"/>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW" mode="details">
+        <b>
+            NAZWA:
+            <xsl:value-of select="NAZWA"/>
+            <br/>
+            ADRES:<xsl:value-of select="ADRES"/>
+            <br/>
+        </b>
+        <br/>
+    </xsl:template>
+
+------ 8. ------
+    <xsl:template match="/">
+        <html>
+            <body>
+                <h1>ZESPOŁY:</h1>
+                <ol>
+                    <xsl:apply-templates select="/ZESPOLY/ROW"/>
+                </ol>
+                <xsl:apply-templates select="/ZESPOLY/ROW" mode="details"/>
+            </body>
+        </html>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW">
+        <li>
+            <xsl:value-of select="NAZWA"/>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW" mode="details">
+        <b>
+            NAZWA:
+            <xsl:value-of select="NAZWA"/>
+            <br/>
+            ADRES:<xsl:value-of select="ADRES"/>
+            <br/>
+        </b>
+        <br/>
+
+        <table border="1">
+            <thead>
+                <th>Nazwisko</th>
+                <th>Etat</th>
+                <th>Zatrudniony</th>
+                <th>Płaca pod.</th>
+                <th>Id szefa</th>
+            </thead>
+            <xsl:apply-templates select="PRACOWNICY/ROW" mode="employee"/>
+        </table>
+        <br/>
+    </xsl:template>
+
+    <xsl:template match="PRACOWNICY/ROW" mode="employee">
+        <tr>
+            <td>
+                <xsl:value-of select="NAZWISKO"/>
+            </td>
+            <td>
+                <xsl:value-of select="ETAT"/>
+            </td>
+            <td>
+                <xsl:value-of select="ZATRUDNIONY"/>
+            </td>
+            <td>
+                <xsl:value-of select="PLACA_POD"/>
+            </td>
+            <td>
+                <xsl:value-of select="ID_SZEFA"/>
+            </td>
+        </tr>
+    </xsl:template>
+
+------ 9. ------
+    <xsl:template match="/">
+        <html>
+            <body>
+                <h1>ZESPOŁY:</h1>
+                <ol>
+                    <xsl:apply-templates select="/ZESPOLY/ROW"/>
+                </ol>
+                <xsl:apply-templates select="/ZESPOLY/ROW" mode="details"/>
+            </body>
+        </html>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW">
+        <li>
+            <a href="#{ID_ZESP}">
+                <xsl:value-of select="NAZWA"/>
+            </a>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW" mode="details">
+        <b id="{ID_ZESP}">
+            NAZWA:
+            <xsl:value-of select="NAZWA"/>
+            <br/>
+            ADRES:<xsl:value-of select="ADRES"/>
+            <br/>
+        </b>
+        <br/>
+
+        <table border="1">
+            <thead>
+                <th>Nazwisko</th>
+                <th>Etat</th>
+                <th>Zatrudniony</th>
+                <th>Płaca pod.</th>
+                <th>Id szefa</th>
+            </thead>
+            <xsl:apply-templates select="PRACOWNICY/ROW" mode="employee"/>
+        </table>
+        <br/>
+    </xsl:template>
+
+    <xsl:template match="PRACOWNICY/ROW" mode="employee">
+        <tr>
+            <td>
+                <xsl:value-of select="NAZWISKO"/>
+            </td>
+            <td>
+                <xsl:value-of select="ETAT"/>
+            </td>
+            <td>
+                <xsl:value-of select="ZATRUDNIONY"/>
+            </td>
+            <td>
+                <xsl:value-of select="PLACA_POD"/>
+            </td>
+            <td>
+                <xsl:value-of select="ID_SZEFA"/>
+            </td>
+        </tr>
+    </xsl:template>
+
+------ 10. ------
+<xsl:apply-templates select="PRACOWNICY/ROW" mode="employee">
+    <xsl:sort select="NAZWISKO"/>
+</xsl:apply-templates>
+
+------ 11. ------
+<td>
+    <xsl:value-of select="//PRACOWNICY/ROW[ID_PRAC = current()/ID_SZEFA]/NAZWISKO"/>
+</td>
+
+------ 12. ------
+<td>
+    <xsl:choose>
+        <xsl:when test="ID_SZEFA">
+            <xsl:value-of select="//PRACOWNICY/ROW[ID_PRAC = current()/ID_SZEFA]/NAZWISKO"/>
+        </xsl:when>
+        <xsl:otherwise>brak</xsl:otherwise>
+    </xsl:choose>
+</td>
+
+------ 13. ------
+Liczba pracowników:
+<xsl:value-of select="count(PRACOWNICY/ROW)"/>
+<br/>
+
+------ 14. ------
+<xsl:if test="count(PRACOWNICY/ROW) > 0">
+    <table border="1">
+        <thead>
+            <th>Nazwisko</th>
+            <th>Etat</th>
+            <th>Zatrudniony</th>
+            <th>Płaca pod.</th>
+            <th>Id szefa</th>
+        </thead>
+        <xsl:apply-templates select="PRACOWNICY/ROW" mode="employee">
+            <xsl:sort select="NAZWISKO"/>
+        </xsl:apply-templates>
+    </table>
+</xsl:if>
+
+__________ FINAL "zesp_prac.xsl" APPEARANCE __________
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:template match="/">
+        <html>
+            <body>
+                <h1>ZESPOŁY:</h1>
+                <ol>
+                    <xsl:apply-templates select="/ZESPOLY/ROW"/>
+                </ol>
+                <xsl:apply-templates select="/ZESPOLY/ROW" mode="details"/>
+            </body>
+        </html>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW">
+        <li>
+            <a href="#{ID_ZESP}">
+                <xsl:value-of select="NAZWA"/>
+            </a>
+        </li>
+    </xsl:template>
+
+    <xsl:template match="/ZESPOLY/ROW" mode="details">
+        <b id="{ID_ZESP}">
+            NAZWA:
+            <xsl:value-of select="NAZWA"/>
+            <br/>
+            ADRES:<xsl:value-of select="ADRES"/>
+            <br/>
+        </b>
+        <br/>
+
+        <xsl:if test="count(PRACOWNICY/ROW) > 0">
+            <table border="1">
+                <thead>
+                    <th>Nazwisko</th>
+                    <th>Etat</th>
+                    <th>Zatrudniony</th>
+                    <th>Płaca pod.</th>
+                    <th>Id szefa</th>
+                </thead>
+                <xsl:apply-templates select="PRACOWNICY/ROW" mode="employee">
+                    <xsl:sort select="NAZWISKO"/>
+                </xsl:apply-templates>
+            </table>
+        </xsl:if>
+        Liczba pracowników:
+        <xsl:value-of select="count(PRACOWNICY/ROW)"/>
+        <br/>
+        <br/>
+    </xsl:template>
+
+    <xsl:template match="PRACOWNICY/ROW" mode="employee">
+        <tr>
+            <td>
+                <xsl:value-of select="NAZWISKO"/>
+            </td>
+            <td>
+                <xsl:value-of select="ETAT"/>
+            </td>
+            <td>
+                <xsl:value-of select="ZATRUDNIONY"/>
+            </td>
+            <td>
+                <xsl:value-of select="PLACA_POD"/>
+            </td>
+            <td>
+                <xsl:choose>
+                    <xsl:when test="ID_SZEFA">
+                        <xsl:value-of select="//PRACOWNICY/ROW[ID_PRAC = current()/ID_SZEFA]/NAZWISKO"/>
+                    </xsl:when>
+                    <xsl:otherwise>brak</xsl:otherwise>
+                </xsl:choose>
+            </td>
+        </tr>
+    </xsl:template>
+
+</xsl:stylesheet>
+_____________________________________________
+
+------ 15. ------
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:template match="/">
+        <PRACOWNICY>
+            <xsl:apply-templates select="//PRACOWNICY/ROW">
+                <xsl:sort select="ID_PRAC"/>
+            </xsl:apply-templates>
+        </PRACOWNICY>
+    </xsl:template>
+
+    <xsl:template match="//PRACOWNICY/ROW">
+        <PRACOWNIK ID_PRAC="{ID_PRAC}" ID_ZESP="{ID_ZESP}" ID_SZEFA="{ID_SZEFA}">
+            <xsl:copy-of select="NAZWISKO"/>
+            <xsl:copy-of select="ETAT"/>
+            <xsl:copy-of select="ZATRUDNIONY"/>
+            <xsl:copy-of select="PLACA_POD"/>
+            <xsl:copy-of select="PLACA_DOD"/>
+        </PRACOWNIK>
+    </xsl:template>
+</xsl:stylesheet>
